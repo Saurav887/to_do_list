@@ -1,0 +1,48 @@
+.button{
+    margin: 3px;
+    border-radius: 10px;
+    padding: 3% 20%;
+    background: transparent;
+    box-shadow: 2px 0 gray;
+    color: blue;
+}
+
+.button:hover{
+    background-color: rgb(218, 239, 255);
+}
+
+a {
+    margin: 3px;
+}
+
+.mask-custom {
+    /* background: rgba(24, 24, 16, 0.2); */
+    background: white;
+    border-radius: 2em;
+    backdrop-filter: blur(25px);
+    /* border: 2px solid rgba(255, 255, 255, 0.05); */
+
+    border: 2px solid black;
+    background-clip: padding-box;
+    /* box-shadow: 10px 10px 10px rgba(46, 54, 68, 0.03); */
+    box-shadow: 10px 10px 10px gray;
+}
+
+.btn-link{
+    color:blue;
+    border: 1px solid blue;
+}
+
+.btn-link:hover{
+    background-color: #ddd;
+}
+
+.btn-primary{
+    background-color: blue;
+    color: white;
+}
+
+.mybtn{
+    background: transparent;
+    border: none;
+}

@@ -1,0 +1,40 @@
+[{
+  "title": "Call Sam For payments",
+  "description": "Talk to Sam regarding the rent of the house",
+  "status": "Pending",
+  "dueDate": "21 July 2023",
+  "userAv": "https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-5.webp",
+  "userName": "Alice Mayer"
+},
+{
+  "title": "Make payment to Bluedart",
+  "description": "Do the checkout for the order",
+  "status": "Successful",
+  "dueDate": "15 July 2023",
+  "userAv": "https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-4.webp",
+  "userName": "Kate Moss"
+},
+{
+  "title": "Office rent",
+  "description": "Pay the rent of the office",
+  "status": "Pending",
+  "dueDate": "25 July 2023",
+  "userAv": "https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp",
+  "userName": "Danny McChain"
+},
+{
+  "title": "Office fruits shopping",
+  "description": "Buy apples and bananas for office",
+  "status": "Failed",
+  "dueDate": "14 July 2023",
+  "userAv": "https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-3.webp",
+  "userName": "Alexa Chung"
+},
+{
+  "title": "Ask for Lunch to Clients",
+  "description": "Ask for Lunch to Clients",
+  "status": "Successful",
+  "dueDate": "17 July 2023",
+  "userAv": "https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-8.webp",
+  "userName": "Ben Smith"
+}]

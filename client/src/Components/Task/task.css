@@ -1,0 +1,15 @@
+.mybtn{
+    background: transparent;
+    border: none;
+}
+
+input, select{
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid black;
+}
+
+input:hover, input:focus, select:hover, select:focus, select:active{
+    border: none;
+    border-bottom: 1px solid black;
+}
