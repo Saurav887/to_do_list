@@ -12,8 +12,14 @@ app.use(express.json());
 app.use(express.urlencoded());
 app.use(cors({
 	origin: '*',
-	credentials: true
-}));
+	optionsSuccessStatus: 200,
+  
+	methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+	preflightContinue: false,
+	optionsSuccessStatus: 204,
+  
+	allowedHeaders: 'Content-Type, Authorization, X-Requested-With',
+  } ));
 
 
 const userConnection = mongoose.createConnection(db_token, {
