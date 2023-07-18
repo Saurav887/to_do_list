@@ -5,7 +5,7 @@ import { config } from 'dotenv';
 
 config();
 const db_token = process.env.DB_TOKEN;
-const port = process.env.API_PORT;
+const port = process.env.API_PORT || 8000;
 
 const app = express();
 app.use(express.json());
@@ -170,10 +170,8 @@ app.post("/update/:_id", async (req,res)=>{
 	}
 });
 
-if(port){
-	app.listen(port, () => {
-		console.log(`Listening to Port ${port}`);
-	});
-}
+app.listen(port, () => {
+	console.log(`Listening to Port ${port}`);
+});
 
 export { app };
