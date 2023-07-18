@@ -55,6 +55,10 @@ const Tasks = taskConnection.model("Tasks", taskSchema);
 
 
 // Routes
+app.get("/", (req,res) => {
+	res.send("My API");
+});
+
 app.post("/login", async (req, res) => {
 	const {email, password} = req.body;
 	
