@@ -49,7 +49,7 @@ export default function HomePage(){
         };
 
         try{
-            await axios.post("http://localhost:8000/add", task)
+            await axios.post("https://task-management-system-bay.vercel.app/add", task)
                     .then( res => {
                         const msg = res.data.message;
                         if(msg === "Same Title Entry Exists") toast.error(msg);

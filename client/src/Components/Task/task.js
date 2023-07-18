@@ -15,7 +15,7 @@ export default function Task({ curTask, setIsUpdated }){
     
     const del = async () => {
         try{
-            const path = `http://localhost:8000/delete/${task._id}`;
+            const path = `https://task-management-system-bay.vercel.app/delete/${task._id}`;
             await axios.post(path)
                     .then(req => {
                         toast.success(req.data.message);
@@ -29,7 +29,7 @@ export default function Task({ curTask, setIsUpdated }){
     const update = async () => {
         try{
             console.log(task);
-            await axios.post(`http://localhost:8000/update/${task._id}`, task)
+            await axios.post(`https://task-management-system-bay.vercel.app/update/${task._id}`, task)
                     .then(req => {
                         toast.success(req.data.message);
                         
@@ -46,7 +46,7 @@ export default function Task({ curTask, setIsUpdated }){
 
     const markDone = async () => {
         try{
-            await axios.post(`http://localhost:8000/markdone/${task._id}`)
+            await axios.post(`https://task-management-system-bay.vercel.app/markdone/${task._id}`)
                     .then(req => {
                         toast.success(req.data.message);
                         setStatusClass("badge bg-success");

@@ -10,7 +10,7 @@ export default function GetAllTaskList({ isUpdated, setIsUpdated, cancelEditing,
 
     async function fetchAllTasks(){
         try{
-            await axios.get("http://localhost:8000/showAllTasks")
+            await axios.get("https://task-management-system-bay.vercel.app/showAllTasks")
                     .then(req => {
                         setAllTasks(req.data.allTasks);
                         setList(req.data.allTasks.map((curTask) => (

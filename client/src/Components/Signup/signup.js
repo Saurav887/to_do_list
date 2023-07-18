@@ -67,7 +67,7 @@ export default function Signup(){
         console.log("signing up");
 
         try{
-            await axios.post("http://localhost:8000/signup", user)
+            await axios.post("https://task-management-system-bay.vercel.app/signup", user)
                     .then( res => {
                         const msg = res.data.message;
                         if(msg === "User already Registered") toast.error(msg);
