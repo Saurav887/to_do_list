@@ -11,7 +11,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(cors({
-	origin: 'https://task-management-system-5q5t.vercel.app/',
+	origin: '*',
 	credentials: true
 }));
 
