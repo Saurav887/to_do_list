@@ -10,7 +10,10 @@ const port = process.env.API_PORT || 8000;
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded());
-app.use(cors());
+app.use(cors({
+	origin: 'https://task-management-system-5q5t.vercel.app/',
+	credentials: true
+}));
 
 
 const userConnection = mongoose.createConnection(db_token, {
