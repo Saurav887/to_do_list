@@ -1,9 +1,11 @@
-import './App.css';
+import { createBrowserRouter, RouterProvider, Route, Link } from "react-router-dom";
 import Login from './Components/Login/login.js';
 import Signup from './Components/Signup/signup.js';
 import HomePage from './Components/HomePage/homepage.js';
-import { createBrowserRouter, RouterProvider, Route, Link } from "react-router-dom";
+import Dashboard from './Components/Dashboard/dashboard.js';
 import ErrorPage from './Components/ErrorPage/errorpage';
+
+import './App.css';
 
 const App = () => {
   const router = createBrowserRouter([
@@ -12,11 +14,14 @@ const App = () => {
       element: <HomePage />,
       errorElement: <ErrorPage />
     },{
-      path: "login",
+      path: "/login",
       element: <Login />
     },{
-      path: "signup",
+      path: "/signup",
       element: <Signup />
+    },{
+      path: "/dashboard",
+      element: <Dashboard />
     }
   ]);
 	 

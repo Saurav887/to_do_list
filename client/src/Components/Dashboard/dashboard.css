@@ -1,0 +1,91 @@
+.mybox{
+    margin-top: 20px;
+}
+
+.button{
+    margin: 3px;
+    border-radius: 10px;
+    padding: 3% 20%;
+    background: transparent;
+    box-shadow: 2px 0 gray;
+    color: blue;
+}
+
+.button:hover{
+    background-color: rgb(218, 239, 255);
+}
+
+#filter{
+    margin-right: 5px;
+    padding: 0 10px;
+    border-radius: 5px;
+    background: transparent;
+    box-shadow: 2px 0 gray;
+    color: blue;
+    font-size:smaller;
+    border: 1px solid black
+}
+
+#filter:hover{
+    background-color: rgb(218, 239, 255);
+}
+
+.filter-block{
+    z-index: 1;
+    position: absolute;
+    margin-left: 64%;
+    margin-top: 8px;
+    background-color: rgb(255, 249, 249);
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 2px 2px gray;
+    visibility: hidden;
+}
+
+.choose-filter{
+    margin: 2px;
+    margin-right: 1px;
+    border: 1px solid black;
+}
+
+#submit{
+    margin-top: 10px;
+    padding: 0 10px;
+    border-radius: 5px;
+    background: transparent;
+    box-shadow: 2px 0 gray;
+    color: blue;
+    font-size: small;
+    border: 1px solid black
+}
+
+a {
+    margin: 3px;
+}
+
+.mask-custom {
+    /* background: rgba(24, 24, 16, 0.2); */
+    background: white;
+    border-radius: 2em;
+    backdrop-filter: blur(25px);
+    /* border: 2px solid rgba(255, 255, 255, 0.05); */
+
+    border: 2px solid black;
+    background-clip: padding-box;
+    /* box-shadow: 10px 10px 10px rgba(46, 54, 68, 0.03); */
+    box-shadow: 10px 10px 10px gray;
+}
+
+.btn-link{
+    color:blue;
+    border: 1px solid blue;
+}
+
+.btn-link:hover{
+    background-color: #ddd;
+}
+
+.btn-primary{
+    background-color: blue;
+    color: white;
+}

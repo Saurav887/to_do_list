@@ -1,15 +1,28 @@
+import { useNavigate }  from 'react-router-dom';
+import error404 from '../../assets/error.jpg';
+
 import './errorpage.css'
 
 export default function ErrorPage(){
+    const navigate = useNavigate();
+
     return (
         <>
-            <header className="header">
-                <nav className="navbar navbar-expand-lg navbar-light py-3">
-                    <div className="container col-md-2">
-                        <h2> 404 Not Found </h2>
+            <div className="d-flex align-items-center justify-content-center vh-100">
+                <div className="text-center row">
+                    <div className=" col-md-6">
+                        <img src={error404} alt="404" className="img-fluid" />
                     </div>
-                </nav>
-            </header>
+                    <div className=" col-md-6 mt-5">
+                        <p className="fs-3"> <span className="text-danger">Opps!</span> Page not found.</p>
+                        <p className="lead">
+                            The page you’re looking for doesn’t exist.
+                        </p>
+                        <span className="btn btn-primary" onClick={() => navigate('/')}>Go Home</span>
+                    </div>
+
+                </div>
+            </div>
         </>
     );
 }

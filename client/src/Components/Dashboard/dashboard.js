@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 import GetAllTaskList from '../GetTaskList/getTaskList.js';
@@ -7,42 +7,48 @@ import { Bars } from 'react-loader-spinner';
 
 import settyl_logo from '../../assets/settyl_logo.jpg';
 import TaskList from '../../assets/TaskList.webp';
-import './homepage.css';
-import 'mdb-ui-kit/css/mdb.min.css';
+import './dashboard.css';
 
 
-export default function HomePage(){
+export default function Dashboard(){
     const location = useLocation();
-    let { user, msg } = location.state || {};
+    let { msg, unauthorizedAccess } = location.state || {};
     const navigate = useNavigate();
-
-    const [curUser, setCurUser] = useState({
-        name: 'Guest'
-    });
-
-    const resetUser = () => setCurUser({
-        name: "Guest"
-    });
+    const ref = useRef(null);
 
     const [cancelEditing, setCancelEditing] = useState(false);
-    const [isUpdated, setIsUpdated] = useState(true);
+    const [isUpdated, setIsUpdated] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [taskList, setTaskList] = useState('fetchAllTasks');
+
+    const [filter, setFilter] = useState({
+        key: "", value: ""
+    });
 
     useEffect(() => {
-        if(user) setCurUser(user);
-        else resetUser();
-
+        if(unauthorizedAccess === undefined) navigate('/notFound');
         if(msg){ toast.success(msg); msg=null; }
-    }, [user, msg]);
+    },[])
 
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFilter({
+            ...filter, [name]: value
+        })
+    }
+
+    const handleApply = () => {
+        setTaskList('fetchTasksWithFilter');
+        setIsUpdated(true);
+    }
+
+    const handleCancel = () => {
+        setCancelEditing(! cancelEditing);
+    };
 
     const addTask = async () => {
         if(isLoading) return;
 
-        if(curUser.name === "Guest"){
-            toast.error("Please Login/SignUp first");
-            return;
-        }
         const task = {
             title: "",
             description: "",
@@ -68,10 +74,6 @@ export default function HomePage(){
         }
         setIsLoading(false);
     }
-
-    const handleCancel = () => {
-        setCancelEditing(! cancelEditing);
-    };
     
 
     return (
@@ -86,17 +88,11 @@ export default function HomePage(){
                         </a>
                     </div>
                     <div className='container col-md-4'>
-                        <h2 style={{"textAlign": "center"}}> Welcome {curUser.name} ! </h2>
+                        <h2 style={{"textAlign": "center"}}> Welcome {"Admin"} ! </h2>
                     </div>
                     <div className='container col-md-1'>
                         {
-                            curUser.name === "Guest"?
-                                <>
-                                    <button className='button' onClick={ () => navigate('/login') }> Login </button>
-                                    <button className='button' onClick={ () => navigate('/signup')}> SignUp </button>
-                                </>
-                            : 
-                                <button className='button' onClick={ () => { resetUser(); navigate('/'); } } > LogOut </button>
+                            <button className='button' onClick={ () => { navigate('/'); } } > LogOut </button>
                         }
                     </div>
                 </nav>
@@ -114,6 +110,23 @@ export default function HomePage(){
                                 <img src={TaskList} alt="Check" width="60"/>
                                 <h2 className="my-4">Task List</h2>
                             </div>
+                            <div className='text-end'>
+                                <button id='filter' onClick={() => { ref.current.style.visibility = ref.current.style.visibility ? "": 'visible' } }> APPLY FILTER </button>
+                            </div>
+                            <div className='filter-block' ref={ref}>
+                                <select className='choose-filter' name='key' value={filter.key} onChange={handleChange}>
+                                    <option value=""> Choose: </option>
+                                    <option value="title"> Title </option>
+                                    <option value="description"> Description </option>
+                                    <option value="dueDate"> Due Date </option>
+                                    <option value="status"> Status </option>
+                                    <option value="userName"> Assigned Member </option>
+                                </select>
+                                <input placeholder='value' name='value' value={filter.value} onChange={handleChange}/>
+                                <div className='text-end'>
+                                    <button type="submit" id="submit" onClick={handleApply}>APPLY</button>
+                                </div>
+                            </div>
                             
                             <table className="table mb-0">
                             <thead>
@@ -128,22 +141,10 @@ export default function HomePage(){
                             </thead>
 
                             <tbody className=".overflow-auto">
-                                {
-                                    curUser.name !== "Guest"?
-                                        <GetAllTaskList isUpdated={isUpdated} setIsUpdated={setIsUpdated} cancelEditing={cancelEditing} />
-                                    : <></>
-                                }
+                                <GetAllTaskList isUpdated={isUpdated} setIsUpdated={setIsUpdated} cancelEditing={cancelEditing} setCancelEditing={setCancelEditing} callFunction={taskList} filter={filter} />
                             </tbody>
                             </table>
                         </div>
-
-                        {
-                            curUser.name === "Guest"?
-                                <div className="container text-center">
-                                    <h2> Login/SignUp to see the Task List </h2>
-                                </div>
-                            : <></>
-                        }
 
                         <div className="card-footer text-end p-3">
                                 <button className="me-2 btn btn-link" onClick={handleCancel}>Cancel</button>

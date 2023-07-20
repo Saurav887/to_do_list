@@ -2,26 +2,24 @@ import { useState } from 'react';
 import axios from 'axios';
 import validator from 'validator';
 import toast, { Toaster } from 'react-hot-toast';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { Bars } from 'react-loader-spinner';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle, faFacebookF, faTwitter} from '@fortawesome/free-brands-svg-icons';
 
 import svg from '../../assets/login.svg';
 import settyl_logo from '../../assets/settyl_logo.jpg';
-
-// import 'bootstrap/dist/css/bootstrap.min.css';
-import 'mdb-ui-kit/css/mdb.min.css';
 import './login.css';
 
 export default function Login(){
-    const { setCurUser } = useLocation();
     const navigate = useNavigate();
 
     const [user, setUser] = useState({
         email: "",
         password: ""
     });
+    const [isLoading, setIsLoading] = useState(false);
 
     function handleChange(e){
         const { name, value } = e.target;
@@ -32,6 +30,8 @@ export default function Login(){
     }
 
     async function login(){
+        if(isLoading) return;
+
         let noError = true;
         if(! validator.isEmail(user.email)) {
             toast.error("Please Enter a valid Email!"); noError = false;
@@ -42,18 +42,21 @@ export default function Login(){
 
         console.log("logging in");
 
+        setIsLoading(true);
         try{
             await axios.post("https://task-management-system-bay.vercel.app/login", user)
                 .then( res => {
                         const msg = res.data.message;
                         if(msg === "User is not Registered, Please SignUp" || msg === "Invalid Username or Password") toast.error(msg);
                         else{
-                            navigate('/', { state: {user: res.data.user, msg: msg} });
+                            if(user.email === "admin@gmail.com") navigate('/dashboard', { state: {unauthorizedAccess: false, msg: msg} });
+                            else navigate('/', { state: {user: res.data.user, msg: msg} });
                         }
                     });
         }catch(error){
             console.log("Error while Loggin In", error.message);
         }
+        setIsLoading(false);
     }
 
     return (
@@ -66,6 +69,9 @@ export default function Login(){
                         <a href="https://settyl.com/" className="navbar-brand">
                             <img src={settyl_logo} alt="settyl_logo" width="150"/>
                         </a>
+                    </div>
+                    <div className='container col-md-1'>
+                        <button className='button' onClick={ () => navigate('/') }> Home </button>
                     </div>
                 </nav>
             </header>
@@ -101,8 +107,17 @@ export default function Login(){
                         </div>
 
                         {/* Submit button */}
-                        <div onClick = {login} className="btn btn-primary btn-lg btn-block">Sign in</div>
-                        <Toaster />
+                        <div onClick = {login} className="btn btn-primary btn-lg btn-block">
+                            {
+                                isLoading? 
+                                    <Bars
+                                        height="18" width="100%" color="#eee"
+                                        ariaLabel="bars-loading" wrapperStyle={{}} wrapperClass="" visible={true}
+                                    />
+                                :
+                                    "Sign In"
+                            }
+                        </div>
 
                         <div className="divider d-flex align-items-center my-4">
                             <p className="text-center fw-bold mx-3 mb-0 text-muted">OR</p>
@@ -122,13 +137,16 @@ export default function Login(){
                         </a>
 
                         <div className="text-center w-100">
-                            <p className="text-muted font-weight-bold">Not Have an Account? <button onClick={ ()=> navigate('/signup', {setCurUser: setCurUser}) } className="text-primary ml-2 btn-signup">SignUp</button></p>
+                            <p className="text-muted font-weight-bold">Not Have an Account? <button onClick={ ()=> navigate('/signup') } className="text-primary ml-2 btn-signup">SignUp</button></p>
                         </div>
                     </form>
                 </div>
                 </div>
                 </div>
             </section>
+
+
+            <Toaster />
         </>
     );
 }

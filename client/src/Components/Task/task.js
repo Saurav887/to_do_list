@@ -1,64 +1,13 @@
 import { useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
-import axios from 'axios';
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt, faCheck, faEdit, faSave } from '@fortawesome/free-solid-svg-icons';
+import Button from '../Button/button.js';
 
-import 'mdb-ui-kit/css/mdb.min.css';
 import './task.css';
 
-export default function Task({ curTask, setIsUpdated }){  
-    const [statusClass, setStatusClass] = useState("");
+export default function Task({ curTask, setIsUpdated, cancelEditing }){  
     const [task, setTask] = useState(curTask);
+    const [statusClass, setStatusClass] = useState("");
     const [isEditing, setIsEditing] = useState(false);
-    
-    const del = async () => {
-        try{
-            const path = `https://task-management-system-bay.vercel.app/delete/${task._id}`;
-            await axios.post(path)
-                    .then(req => {
-                        toast.success(req.data.message);
-                        setIsUpdated(true);
-                    })
-        }catch(error){
-            console.log("Error while Deleting", error.message);
-        }
-    }
-
-    const update = async () => {
-        try{
-            console.log(task);
-            await axios.post(`https://task-management-system-bay.vercel.app/update/${task._id}`, task)
-                    .then(req => {
-                        toast.success(req.data.message);
-                        
-                        if(req.data.task.status === "Successful") setStatusClass("badge bg-success");
-                        else if(req.data.task.status === "Failed") setStatusClass("badge bg-danger");
-                        else setStatusClass("badge bg-warning");
-
-                        setIsUpdated(true);
-                    })
-        }catch(error){
-            console.log("Error while Updating", error.message);
-        }
-    }
-
-    const markDone = async () => {
-        try{
-            await axios.post(`https://task-management-system-bay.vercel.app/markdone/${task._id}`)
-                    .then(req => {
-                        toast.success(req.data.message);
-                        setStatusClass("badge bg-success");
-                        setTask({
-                            ...task, status:"Successful"
-                        })
-                        setIsUpdated(true);
-                    })
-        }catch(error){
-            console.log("Error while Changing Status", error.message);
-        }
-    }
 
     useEffect(() => {
         if(task.status === "Successful") setStatusClass("badge bg-success");
@@ -66,10 +15,9 @@ export default function Task({ curTask, setIsUpdated }){
         else setStatusClass("badge bg-warning");
     }, []);
 
-    const handleUpdate = async () => {
-        if(isEditing) await update();
-        setIsEditing(! isEditing);
-    }
+    useEffect(() => {
+        if(isEditing) setIsEditing(false);
+    }, [cancelEditing. isEditing])
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -95,11 +43,13 @@ export default function Task({ curTask, setIsUpdated }){
             </td>
             <td className="align-middle">
                 {
-                    isEditing ? <select name="status" value={task.status} onChange={handleChange}>
-                        <option value="Pending">Pending</option>
-                        <option value="Successful">Successful</option>
-                        <option value="Failed">Failed</option>
-                    </select>
+                    isEditing ? 
+                        <select name="status" value={task.status} onChange={handleChange}>
+                            <option value="">Choose:</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Successful">Successful</option>
+                            <option value="Failed">Failed</option>
+                        </select>
                     : <h6 className="mb-0"><span className={statusClass}>{task.status}</span></h6>
                 }
             </td>
@@ -117,12 +67,17 @@ export default function Task({ curTask, setIsUpdated }){
                 }
             </th>
             <td className="align-middle">
-                <button data-mdb-toggle="tooltip" title={isEditing? "Save": "Edit"} className='mybtn' onClick={handleUpdate}>
-                    <FontAwesomeIcon icon={isEditing? faSave: faEdit} className="fa-lg" style={isEditing? {"color": "black"} :{"color": "blue"}}></FontAwesomeIcon></button>  
-                <button data-mdb-toggle="tooltip" title="Done" className='mybtn' onClick={markDone}>
-                    <FontAwesomeIcon icon={faCheck} className="fa-lg" style={{"color":"green"}}></FontAwesomeIcon></button>
-                <button data-mdb-toggle="tooltip" title="Remove" className='mybtn' onClick={del}>
-                    <FontAwesomeIcon icon={faTrashAlt} className="fa-lg"  style={{"color":"gray"}}></FontAwesomeIcon></button>
+                <Button
+                    task={task} setTask={setTask} setStatusClass={setStatusClass} setIsUpdated={setIsUpdated} isEditing={isEditing} setIsEditing={setIsEditing}
+                    title={isEditing? "Save": "Edit"} icon={isEditing? faSave: faEdit} color={isEditing? "black": "blue"} onClick={"handleUpdate"}
+                />
+                <Button 
+                    task={task} setTask={setTask} setStatusClass={setStatusClass} setIsUpdated={setIsUpdated} isEditing={isEditing} setIsEditing={setIsEditing}
+                    title={"Done"} icon={faCheck} color={"green"} onClick={"markDone"}
+                />
+                <Button task={task} setTask={setTask} setStatusClass={setStatusClass} setIsUpdated={setIsUpdated} isEditing={isEditing} setIsEditing={setIsEditing}
+                    title={"Remove"} icon={faTrashAlt} color={"gray"} onClick={"del"} 
+                />
             </td>
         </tr>
     );

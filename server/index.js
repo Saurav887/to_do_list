@@ -19,7 +19,7 @@ app.use(cors({
 	optionsSuccessStatus: 204,
   
 	allowedHeaders: 'Content-Type, Authorization, X-Requested-With',
-  } ));
+}));
 
 
 const userConnection = mongoose.createConnection(db_token, {
@@ -118,6 +118,17 @@ app.get("/showAllTasks", async (req,res) => {
 	}
 });
 
+app.post("/taskListFilter", async (req,res) => {
+	const { key, value } = req.body;
+	try{
+		const allTasks = await Tasks.find({ [key]: value });
+		res.send( {message: "Successfully Fetched", allTasks: allTasks} );
+	}catch(error){
+		console.log("Error while Fetching All Tasks: ", error.message);
+		res.status(500).send("An error occurred while fetching all the tasks.");
+	}
+});
+
 app.post("/add", async (req, res) => {
 	const { title, description, dueDate, status, userAv, userName } = req.body;
 	const task = new Tasks({
@@ -187,8 +198,4 @@ app.listen(port, () => {
 	console.log(`Listening to Port ${port}`);
 });
 
-// export default function handler(request, response) {
-// 	const { name } = request.query;
-// 	response.status(200).json({name});
-// }
 export { app };

@@ -2,7 +2,8 @@ import { useState } from 'react';
 import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
 import validator from "validator";
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { Bars } from 'react-loader-spinner';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faEnvelope, faPhoneSquare, faLock, faAddressCard } from '@fortawesome/free-solid-svg-icons';
@@ -10,14 +11,11 @@ import { faFacebookF, faTwitter, faGoogle } from '@fortawesome/free-brands-svg-i
 
 import signupSvg from '../../assets/signup.svg';
 import settyl_logo from '../../assets/settyl_logo.jpg';
-
-// import 'bootstrap/dist/css/bootstrap.css'
-import 'mdb-ui-kit/css/mdb.min.css';
 import './signup.css';
+import 'mdb-ui-kit/css/mdb.min.css';
 
 
 export default function Signup(){
-    const { setCurUser } = useLocation();
     const navigate = useNavigate();
 
     const [user, setUser] = useState({
@@ -30,6 +28,7 @@ export default function Signup(){
         password: "",
         passwordConfirmation: ""
     });
+    const [isLoading, setIsLoading] = useState(false);
 
     function handleChange(e){
         const { name, value } = e.target;
@@ -40,23 +39,16 @@ export default function Signup(){
     }
 
     async function signup(){
+        if(isLoading) return;
+
         let noError = true;
-        function notANumber(s){
-            for(let i=0; i<s.length; i++){
-                let ch = s.charAt(i);
-                if(ch > '9' || ch < '0') return true;
-            }
-            return false;
-        }
 
         if(user.firstName === ""){ toast.error("First Name cannot be empty"); noError=false; }
         if(user.lastName === ""){ toast.error("Last Name cannot be empty"); noError=false; }
         if(user.email === ""){ toast.error("Email cannot be empty"); noError=false; }
-        if(user.phone === ""){ toast.error("Phone cannot be empty"); noError=false; }
         if(user.jobTitle === ""){ toast.error("Please choose a job role"); noError=false; }
         if(user.password === "" || user.passwordConfirmation === ""){ toast.error("Password cannot be empty"); noError=false; }
         
-        if(notANumber(user.phone)){ toast.error("Phone Number should be a number"); noError = false; }
         if(user.password !== user.passwordConfirmation){ toast.error("Password and Confirm Password should be same"); noError=false; }
         if(! validator.isEmail(user.email)) {
             toast.error("Please, enter a valid Email!"); noError = false;
@@ -65,7 +57,8 @@ export default function Signup(){
         if(! noError) return;
 
         console.log("signing up");
-
+        
+        setIsLoading(true);
         try{
             await axios.post("https://task-management-system-bay.vercel.app/signup", user)
                     .then( res => {
@@ -77,7 +70,8 @@ export default function Signup(){
                     });
         }catch(error){
             console.log("Error while Signing In", error.message);
-        } 
+        }
+        setIsLoading(false);
     }
 
     return (
@@ -90,6 +84,9 @@ export default function Signup(){
                         <a href="https://settyl.com/" className="navbar-brand">
                             <img src={settyl_logo} alt="settyl_logo" width="150"/>
                         </a>
+                    </div>
+                    <div className='container col-md-1'>
+                        <button className='button' onClick={ () => navigate('/') }> Home </button>
                     </div>
                 </nav>
             </header>
@@ -140,23 +137,6 @@ export default function Signup(){
                                     <input id="email" type="email" name="email" value = {user.email} placeholder="Email Address" className="form-control bg-white border-left-0 border-md" onChange={handleChange} />
                                 </div>
             
-                                {/* Phone Number */}
-                                <div className="input-group col-lg-12 mb-4">
-                                    <div className="input-group-prepend">
-                                        <span className="input-group-text bg-white px-4 border-md border-right-0">
-                                            <FontAwesomeIcon icon = {faPhoneSquare} className='text-muted'/>
-                                        </span>
-                                    </div>
-                                    <select id="countryCode" name="countryCode" value={user.countryCode} onChange={handleChange} style={{"maxWidth": "80px"}} className="form-select-sm custom-select form-select bg-white border-left-0 border-md h-100 font-weight-bold text-muted">
-                                        <option value="+12">+12</option>
-                                        <option value="+10">+10</option>
-                                        <option value="+15">+15</option>
-                                        <option value="+91">+91</option>
-                                    </select>
-                                    <input id="phoneNumber" type="tel" name="phone" value = {user.phone}  placeholder="Phone Number" className="form-control bg-white border-md border-left-0 pl-3" onChange={handleChange}/>
-                                </div>
-            
-            
                                 {/* Job */}
                                 <div className="input-group col-lg-12 mb-4">
                                     <div className="input-group-prepend">
@@ -196,7 +176,17 @@ export default function Signup(){
                                 {/* Submit Button */}
                                 <div className="form-group col-lg-12 mx-auto mb-0" onClick={signup} >
                                     <a href="#" className="btn btn-primary btn-block py-2">
-                                        <span className="font-weight-bold" >Create your account</span>
+                                        <span className="font-weight-bold">
+                                            {
+                                                isLoading? 
+                                                    <Bars
+                                                        height="18" width="100%" color="#eee"
+                                                        ariaLabel="bars-loading" wrapperStyle={{}} wrapperClass="" visible={true}
+                                                    />
+                                                :
+                                                    "Create your account"
+                                            }
+                                        </span>
                                     </a>
                                     <Toaster reverseOrder={true}/>
                                 </div>
@@ -226,7 +216,7 @@ export default function Signup(){
             
                                 {/* Already Registered */}
                                 <div className="text-center w-100">
-                                    <p className="text-muted font-weight-bold">Already Registered? <button onClick={ ()=> navigate('/login', {setCurUser: setCurUser}) } className="text-primary ml-2 btn-login">Login</button></p>
+                                    <p className="text-muted font-weight-bold">Already Registered? <button onClick={ ()=> navigate('/login') } className="text-primary ml-2 btn-login">Login</button></p>
                                 </div>
                             </div>
                         </form>
