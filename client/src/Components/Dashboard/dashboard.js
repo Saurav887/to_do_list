@@ -43,6 +43,7 @@ export default function Dashboard(){
     }
 
     const handleCancel = () => {
+        setTaskList('fetchAllTasks');
         setCancelEditing(! cancelEditing);
     };
 
