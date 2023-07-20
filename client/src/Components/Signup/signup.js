@@ -21,8 +21,6 @@ export default function Signup(){
     const [user, setUser] = useState({
         firstName: "",
         lastName: "",
-        countryCode: "+12",
-        phone: "",
         jobTitle: "",
         email: "",
         password: "",

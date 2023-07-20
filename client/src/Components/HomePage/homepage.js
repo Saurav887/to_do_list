@@ -30,8 +30,6 @@ export default function HomePage(){
 
     useEffect(() => {
         if(user) setCurUser(user);
-        else resetUser();
-
         if(msg){ toast.success(msg); msg=null; }
     }, [user, msg]);
 
@@ -130,7 +128,7 @@ export default function HomePage(){
                             <tbody className=".overflow-auto">
                                 {
                                     curUser.name !== "Guest"?
-                                        <GetAllTaskList isUpdated={isUpdated} setIsUpdated={setIsUpdated} cancelEditing={cancelEditing} />
+                                        <GetAllTaskList isUpdated={isUpdated} setIsUpdated={setIsUpdated} cancelEditing={cancelEditing} callFunction={'fetchAllTasks'}/>
                                     : <></>
                                 }
                             </tbody>

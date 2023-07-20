@@ -100,8 +100,8 @@ export default function Login(){
                         {/* Checkbox */}
                         <div className="d-flex justify-content-around align-items-center mb-4">
                             <div className="form-check">
-                            <input className="form-check-input" type="checkbox" value="" id="form1Example3" />
-                            <label className="form-check-label" htmlFor="form1Example3"> Remember me </label>
+                                <input className="form-check-input" type="checkbox" value="" id="form1Example3" />
+                                <label className="form-check-label" htmlFor="form1Example3"> Remember me </label>
                             </div>
                             <a href="#!">Forgot password?</a>
                         </div>
