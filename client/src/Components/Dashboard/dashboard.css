@@ -89,3 +89,13 @@ a {
     background-color: blue;
     color: white;
 }
+
+#taskCount, #arc{
+    border-radius: 1em;
+    border: none;
+    box-shadow: 5px 5px 5px 3px gray;
+}
+
+#taskCount{
+    height: 100%;
+}

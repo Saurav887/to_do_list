@@ -1,10 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
-import GetAllTaskList from '../GetTaskList/getTaskList.js';
 import axios from 'axios';
 import { Bars } from 'react-loader-spinner';
 
+import GetAllTaskList from '../GetTaskList/getTaskList.js';
+import Stats from '../Statistics/stats.js';
 import settyl_logo from '../../assets/settyl_logo.jpg';
 import TaskList from '../../assets/TaskList.webp';
 import './dashboard.css';
@@ -99,9 +100,11 @@ export default function Dashboard(){
                 </nav>
             </header>
 
+            <Stats />
+
             <section className="vh-100">
                 <div className="container py-5 h-100">
-                    <div className="row d-flex justify-content-center h-100 mybox">
+                    <div className="row d-flex justify-content-center h-100">
                     <div className="col-md-12 col-xl-11">
 
                         <div className="card mask-custom">

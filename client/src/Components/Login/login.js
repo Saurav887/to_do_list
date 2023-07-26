@@ -39,7 +39,6 @@ export default function Login(){
         if(user.password === ""){ toast.error("Password cannot be empty"); noError=false; }
 
         if(! noError) return;
-
         console.log("logging in");
 
         setIsLoading(true);

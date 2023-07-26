@@ -15,13 +15,16 @@ const App = () => {
       errorElement: <ErrorPage />
     },{
       path: "/login",
-      element: <Login />
+      element: <Login />,
+      errorElement: <ErrorPage />
     },{
       path: "/signup",
-      element: <Signup />
+      element: <Signup />,
+      errorElement: <ErrorPage />
     },{
       path: "/dashboard",
-      element: <Dashboard />
+      element: <Dashboard />,
+      errorElement: <ErrorPage />
     }
   ]);
 	 

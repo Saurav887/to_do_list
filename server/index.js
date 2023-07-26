@@ -194,6 +194,17 @@ app.post("/update/:_id", async (req,res)=>{
 	}
 });
 
+app.get('/getStats', async (req, res) => {
+	try{
+		const successful = await Tasks.find({ status: "Successful" });
+		const totalTasks = await Tasks.find();
+		res.send( {message: "Successfully Fetched", totalTasksCount: totalTasks.length, successfulCount: successful.length} );
+	}catch(error){
+		console.log("Error while Fetching Stats: ", error.message);
+		res.status(500).send("An error occurred while fetching stats.");
+	}
+})
+
 app.listen(port, () => {
 	console.log(`Listening to Port ${port}`);
 });
