@@ -40,7 +40,6 @@ const userSchema = new mongoose.Schema({
     name: String,
     email: String,
     password: String,
-    contactNo: String,
     jobTitle: String
 },{
 	versionKey: false // Disable versioning
@@ -86,15 +85,14 @@ app.post("/login", async (req, res) => {
 });
 
 app.post("/signup", async (req, res) => {
-    const { firstName, lastName, email, password, phone, jobTitle, countryCode } = req.body;
+    const { firstName, lastName, email, password, jobTitle } = req.body;
     let name = firstName  + " " + lastName;
-    let contactNo = countryCode + " " + phone;
 
 	if(await User.exists( {email: email} )){
 		res.send( {message: "User already Registered"});
 	}else{
 		const user = new User({
-			name, email, password, contactNo, jobTitle 
+			name, email, password, jobTitle 
 		});
 
 		try{			
@@ -172,7 +170,6 @@ app.post("/update/:_id", async (req,res)=>{
 	const curTask = new Tasks({
 		title, description, status, dueDate, userAv, userName
 	});
-	console.log(curTask);
 		
 	try{
 		await Tasks.findOneAndUpdate(

@@ -4,7 +4,6 @@ import axios from 'axios';
 import Task from '../Task/task.js';
 
 export default function GetAllTaskList({ isUpdated, setIsUpdated, cancelEditing, callFunction, filter }){
-    const [allTasks, setAllTasks] = useState([]);
     const [list, setList] = useState();
     const [isLoading, setIsLoading] = useState(false);
     const loader = () => {
@@ -27,7 +26,6 @@ export default function GetAllTaskList({ isUpdated, setIsUpdated, cancelEditing,
         try{
             await axios.get("https://task-management-system-bay.vercel.app/showAllTasks")
                     .then(req => {
-                        setAllTasks(req.data.allTasks);
                         setList(req.data.allTasks.map((curTask) => (
                             <Task
                                 key={curTask._id} curTask={curTask}
@@ -46,7 +44,6 @@ export default function GetAllTaskList({ isUpdated, setIsUpdated, cancelEditing,
         try{
             await axios.post("https://task-management-system-bay.vercel.app/taskListFilter", filter)
             .then(req => {
-                setAllTasks(req.data.allTasks);
                 setList(req.data.allTasks.map((curTask) => (
                     <Task
                         key={curTask._id} curTask={curTask}
